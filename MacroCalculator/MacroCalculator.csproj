@@ -58,7 +58,13 @@
     <Compile Include="CutPage\CutPage.Designer.cs">
       <DependentUpon>CutPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Factory\DietPlanFactory.cs" />
+    <Compile Include="Interfaces\ICalorieCalculator.cs" />
     <Compile Include="Interfaces\IDietPlanPage.cs" />
+    <Compile Include="Logic\BulkCaloriesCalculator.cs" />
+    <Compile Include="Logic\CutCaloriesCalculator.cs" />
+    <Compile Include="Logic\MacroCalculatorLogic.cs" />
+    <Compile Include="Logic\MaintainCaloriesCalculator.cs" />
     <Compile Include="MainPage\MainPage.cs">
       <SubType>Form</SubType>
     </Compile>

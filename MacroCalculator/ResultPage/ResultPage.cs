@@ -27,12 +27,12 @@
                 infoLabel.Visible = true;
             }
 
-            public void ShowPage() // Implementare ShowPage
+            public void ShowPage() 
             {
                 this.Show();
             }
 
-            public void HidePage() // Implementare HidePage
+            public void HidePage() 
             {
                 this.Hide();
             }

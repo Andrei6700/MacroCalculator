@@ -3,6 +3,8 @@ using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using MacroCalculator.Factory_MacroCalculator;
+using MacroCalculator.Interfaces;
+using MacroCalculator.Logic;
 
 namespace MacroCalculator.Maintain
 {
@@ -25,7 +27,7 @@ namespace MacroCalculator.Maintain
             activityComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        public void ShowPage() 
+        public void ShowPage()
         {
             this.Show();
         }
@@ -59,19 +61,22 @@ namespace MacroCalculator.Maintain
 
             // Mifflin-St Jeor formula
             double bmr = 10 * weight + 6.25 * height - 5 * age + (sex == "Male" ? 5 : -161);
-            double tdee = bmr * activityFactor;
+
+            // Calculating calories
+            ICalorieCalculator calorieCalculator = new MaintainCaloriesCalculator();
+            double totalCalories = calorieCalculator.CalculateCalories(bmr, activityFactor, 0);
 
             // Macro
-            double carbsGrams = (tdee * 0.5) / 4;
+            double carbsGrams = (totalCalories * 0.5) / 4;
             double proteinGrams = weight * 2.2;
-            double fatGrams = (tdee * 0.25) / 9;
-            double fiberGrams = tdee / 1000 * 14;
+            double fatGrams = (totalCalories * 0.25) / 9;
+            double fiberGrams = totalCalories / 1000 * 14;
 
             var table = new DataTable();
             table.Columns.Add("Macro", typeof(string));
             table.Columns.Add("Value per gram", typeof(string));
 
-            table.Rows.Add("Total calories", $"{(int)Math.Round(tdee)} kcal");
+            table.Rows.Add("Total calories", $"{(int)Math.Round(totalCalories)} kcal");
             table.Rows.Add("Carbs", ((int)Math.Round(carbsGrams)).ToString());
             table.Rows.Add("Protein", ((int)Math.Round(proteinGrams)).ToString());
             table.Rows.Add("Fats", ((int)Math.Round(fatGrams)).ToString());

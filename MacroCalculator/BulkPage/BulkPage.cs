@@ -3,10 +3,12 @@ using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using MacroCalculator.Factory_MacroCalculator;
+using MacroCalculator.Interfaces;
+using MacroCalculator.Logic;
 
 namespace MacroCalculator.BulkPage
 {
-    public partial class BulkPage : Form, IDietPlanPage 
+    public partial class BulkPage : Form, IDietPlanPage
     {
         public BulkPage()
         {
@@ -28,12 +30,12 @@ namespace MacroCalculator.BulkPage
             bulkComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        public void ShowPage() 
+        public void ShowPage()
         {
             this.Show();
         }
 
-        public void HidePage() 
+        public void HidePage()
         {
             this.Hide();
         }
@@ -64,10 +66,12 @@ namespace MacroCalculator.BulkPage
             // Caloric surplus
             int surplus = bulkComboBox.SelectedItem.ToString().Contains("250") ? 250 : 500;
 
-            // Mifflin-St Jeor formula
+            // Mifflin-St Jeor formula for BMR
             double bmr = 10 * weight + 6.25 * height - 5 * age + (sex == "Male" ? 5 : -161);
-            double tdee = bmr * activityFactor;
-            double totalCalories = tdee + surplus;
+
+            // Calculating calories
+            ICalorieCalculator calorieCalculator = new BulkCaloriesCalculator();
+            double totalCalories = calorieCalculator.CalculateCalories(bmr, activityFactor, surplus);
 
             // Macro
             double carbsGrams = (totalCalories * 0.5) / 4;

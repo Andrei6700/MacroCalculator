@@ -3,10 +3,12 @@ using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using MacroCalculator.Factory_MacroCalculator;
+using MacroCalculator.Interfaces;
+using MacroCalculator.Logic;
 
 namespace MacroCalculator.CutPage
 {
-    public partial class CutPage : Form, IDietPlanPage 
+    public partial class CutPage : Form, IDietPlanPage
     {
         public CutPage()
         {
@@ -33,7 +35,7 @@ namespace MacroCalculator.CutPage
             this.Show();
         }
 
-        public void HidePage() 
+        public void HidePage()
         {
             this.Hide();
         }
@@ -66,18 +68,20 @@ namespace MacroCalculator.CutPage
             int deficit = cutComboBox.SelectedItem.ToString().Contains("300") ? 300 : 600;
             string cutType = cutComboBox.SelectedItem.ToString();
 
-            // BMR & TDEE calc
+            // BMR calculation
             double bmr = 10 * weight + 6.25 * height - 5 * age + (sex == "Male" ? 5 : -161);
-            double tdee = bmr * activityFactor;
-            double totalCalories = tdee - deficit;
+
+            // Calculating calories
+            ICalorieCalculator calorieCalculator = new CutCaloriesCalculator();
+            double totalCalories = calorieCalculator.CalculateCalories(bmr, activityFactor, deficit);
 
             // Macro
             double carbsGrams = (totalCalories * 0.5) / 4;
-            double proteinGrams = weight * 3; // 3g of protein x kg/body
+            double proteinGrams = weight * 3; // 3g protein per kg
             double fatGrams = (totalCalories * 0.25) / 9;
             double fiberGrams = totalCalories / 1000 * 14;
 
-            // Calculation for the days needed to reach the target weight
+            // Check if target weight is valid
             if (target >= weight)
             {
                 MessageBox.Show("Target weight must be less than current weight for a cut!", "Error 404",
@@ -88,12 +92,7 @@ namespace MacroCalculator.CutPage
             double weightDiff = weight - target; // kg to lose
             double dailyDeficit = deficit; // kcal per day
             double daysNeeded = (weightDiff * 7700) / dailyDeficit; // 7700 kcal = 1 kg
-
-            // Check if number of days is not negative
-            if (daysNeeded < 0)
-            {
-                daysNeeded = 0;
-            }
+            if (daysNeeded < 0) daysNeeded = 0;
 
             int days = (int)Math.Ceiling(daysNeeded);
             int weeks = days / 7;
