@@ -78,7 +78,8 @@ Metoda `CreateDietPlan` primeste tipul dietei alese de catre utilizator, unde va
 ```
 
 # Preview:
-<video controls src="./Demo/Demo.mp4" title="Demo"></video>
+https://github.com/user-attachments/assets/16aa3e18-cad4-4f54-8d73-b72ca401a2a3
+
 
 # Documentatie:
 ### Links:
