@@ -59,7 +59,10 @@
     <Compile Include="CutPage\CutPage.Designer.cs">
       <DependentUpon>CutPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Factory\BulkPlanFactory.cs" />
+    <Compile Include="Factory\CutPlanFactory.cs" />
     <Compile Include="Factory\DietPlanFactory.cs" />
+    <Compile Include="Factory\MaintainPlanFactory.cs" />
     <Compile Include="Interfaces\ICalorieCalculator.cs" />
     <Compile Include="Interfaces\IDietPlanPage.cs" />
     <Compile Include="Logic\BulkCaloriesCalculator.cs" />
@@ -88,6 +91,7 @@
     </Compile>
     <EmbeddedResource Include="BulkPage\BulkPage.resx">
       <DependentUpon>BulkPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CutPage\CutPage.resx">
       <DependentUpon>CutPage.cs</DependentUpon>

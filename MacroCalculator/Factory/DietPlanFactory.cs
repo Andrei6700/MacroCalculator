@@ -2,25 +2,13 @@
 using System;
 using MacroCalculator.BulkPage;
 using MacroCalculator.CutPage;
+using MacroCalculator.Factory_MacroCalculator;
 
 namespace MacroCalculator.Factory_MacroCalculator
 {
-    // create instances based of the diet choosed
-    public static class DietPlanFactory
+    // Creatorul – defineşte semnătura metodei de fabricaţie
+    public abstract class DietPlanFactory
     {
-        public static IDietPlanPage CreateDietPlan(string dietType)
-        {
-            switch (dietType)
-            {
-                case "Bulk":
-                    return new MacroCalculator.BulkPage.BulkPage();
-                case "Cut":
-                    return new MacroCalculator.CutPage.CutPage();
-                case "Maintain":
-                    return new MacroCalculator.Maintain.MaintainPage();
-                default:
-                    throw new ArgumentException("Invalid diet type");
-            }
-        }
+        public abstract IDietPlanPage CreatePage();
     }
 }

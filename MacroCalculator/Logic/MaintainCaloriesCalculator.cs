@@ -3,11 +3,12 @@ using System;
 
 namespace MacroCalculator.Logic
 {
-    public class MaintainCaloriesCalculator : ICalorieCalculator
+    public class MaintenanceCaloriesCalculator : ICalorieCalculator
     {
         public double CalculateCalories(double bmr, double activityFactor, int surplusOrDeficit)
         {
-            return bmr * activityFactor;
+            double tdee = bmr * activityFactor;
+            return tdee + 0;
         }
     }
 }

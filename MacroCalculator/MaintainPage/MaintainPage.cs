@@ -63,7 +63,7 @@ namespace MacroCalculator.Maintain
             double bmr = 10 * weight + 6.25 * height - 5 * age + (sex == "Male" ? 5 : -161);
 
             // Calculating calories
-            ICalorieCalculator calorieCalculator = new MaintainCaloriesCalculator();
+            ICalorieCalculator calorieCalculator = new MaintenanceCaloriesCalculator();
             double totalCalories = calorieCalculator.CalculateCalories(bmr, activityFactor, 0);
 
             // Macro

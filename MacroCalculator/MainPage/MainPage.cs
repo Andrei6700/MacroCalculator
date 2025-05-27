@@ -13,21 +13,24 @@ namespace MacroCalculator.MainPage
 
         private void btnBulk_Click(object sender, EventArgs e)
         {
-            var bulkPage = DietPlanFactory.CreateDietPlan("Bulk");
+            var factory = new BulkPlanFactory();
+            IDietPlanPage bulkPage = factory.CreatePage();
             bulkPage.ShowPage();
             this.Hide();
         }
 
         private void btnCut_Click(object sender, EventArgs e)
         {
-            var cutPage = DietPlanFactory.CreateDietPlan("Cut");
+            var factory = new CutPlanFactory();
+            IDietPlanPage cutPage = factory.CreatePage();
             cutPage.ShowPage();
             this.Hide();
         }
 
         private void btnMaintain_Click(object sender, EventArgs e)
         {
-            var maintainPage = DietPlanFactory.CreateDietPlan("Maintain");
+            var factory = new MaintainPlanFactory();
+            IDietPlanPage maintainPage = factory.CreatePage();
             maintainPage.ShowPage();
             this.Hide();
         }

@@ -8,7 +8,7 @@ namespace MacroCalculator.Logic
         public double CalculateCalories(double bmr, double activityFactor, int surplusOrDeficit)
         {
             double tdee = bmr * activityFactor;
-            return tdee - surplusOrDeficit;
+            return tdee + (surplusOrDeficit - 500);
         }
     }
 }
