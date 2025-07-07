@@ -22,30 +22,39 @@
 - În loc să folosim direct operatorul new, apelăm o metodă specială (factory) care decide ce tip de obiect să creeze. Astfel, adăugarea unor noi tipuri de obiecte nu afectează codul client, iar întreaga logică de creare este concentrată într-un singur loc.
 
 ### Implementarea in cod:
-Factory pattern este implementat de clasa  `DietPlanFactory`:
-```c#
-    public static class DietPlanFactory
-    {
-        public static IDietPlanPage CreateDietPlan(string dietType)
+Factory pattern este implementat prin clasele factory abstracte și concrete:
+
+- `DietPlanFactory`- clasa abstractă de bază
+- `BulkPlanFactory` - pentru crearea paginii de bulk
+- `CutPlanFactory` - pentru crearea paginii de cut  
+- `MaintainPlanFactory` - pentru crearea paginii de menitnere
+
+Este utilizata in `MainPage.cs`:
+```csharp
+  private void btnBulk_Click(object sender, EventArgs e)
         {
-            switch (dietType)
-            {
-                case "Bulk":
-                    return new MacroCalculator.BulkPage.BulkPage();
-                case "Cut":
-                    return new MacroCalculator.CutPage.CutPage();
-                case "Maintain":
-                    return new MacroCalculator.Maintain.MaintainPage();
-                default:
-                    throw new ArgumentException("Invalid diet type");
-            }
+            var factory = new BulkPlanFactory();
+            IDietPlanPage bulkPage = factory.CreatePage();
+            bulkPage.ShowPage();
+            this.Hide();
         }
-    }
+
+        private void btnCut_Click(object sender, EventArgs e)
+        {
+            var factory = new CutPlanFactory();
+            IDietPlanPage cutPage = factory.CreatePage();
+            cutPage.ShowPage();
+            this.Hide();
+        }
+
+        private void btnMaintain_Click(object sender, EventArgs e)
+        {
+            var factory = new MaintainPlanFactory();
+            IDietPlanPage maintainPage = factory.CreatePage();
+            maintainPage.ShowPage();
+            this.Hide();
+        }
 ```
-Metoda `CreateDietPlan` primeste tipul dietei alese de catre utilizator, unde va returna instanta respectiva:
-   - Bulk
-   - Cut
-   - Mentinere
 
 
 ## Strategy Pattern
@@ -55,26 +64,18 @@ Metoda `CreateDietPlan` primeste tipul dietei alese de catre utilizator, unde va
 
 ### Implementarea in cod:
 - Strategy Pattern in aplicatie este folosit pentru calculul caloriilor in functie de obiectivul ales de catre utilizator (Bulk, Cut sau Mentinere).
-- Clasele concrete `BulkCaloriesCalculator`, `CutCaloriesCalculator` și `MaintainCaloriesCalculator` implementeaza ICalorieCalculator, unde acestea aplica formula specifica pentru a calcula caloriile (kcal):
+- Clasele concrete:
+    -  `ICalorieCalculator` = interfata pentru strategy
+    -  `BulkCaloriesCalculator`= clasa pt surplus caloric
+    -  `CutCaloriesCalculator` = clasa pentru deficit caloric
+    -  `MaintenanceCaloriesCalculator` = clasa pentru mentinere
+
+- Exemplu de folosire pentru Bulk
 ```c#
-            // Sex
-            string sex = sexComboBox.SelectedItem.ToString();
-
-            // Activity factor
-            string act = activityComboBox.SelectedItem.ToString();
-            string actVal = act.Substring(act.IndexOf('(') + 1).TrimEnd(')');
-            actVal = actVal.Replace(',', '.');
-            double activityFactor = double.Parse(actVal, CultureInfo.InvariantCulture);
-
-            // Caloric surplus
-            int surplus = bulkComboBox.SelectedItem.ToString().Contains("250") ? 250 : 500;
-
-            // Mifflin-St Jeor formula for BMR
-            double bmr = 10 * weight + 6.25 * height - 5 * age + (sex == "Male" ? 5 : -161);
-
             // Calculating calories
             ICalorieCalculator calorieCalculator = new BulkCaloriesCalculator();
             double totalCalories = calorieCalculator.CalculateCalories(bmr, activityFactor, surplus);
+
 ```
 
 # Preview:
